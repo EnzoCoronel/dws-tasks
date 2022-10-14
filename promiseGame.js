@@ -1,7 +1,7 @@
-let turn = Math.floor(Math.random() * 500);
+let turn = Math.floor(Math.random() * 5000);
 
 const myPromise = (resolve, reject) => {
-    if (turn < 300){
+    if (turn < 3000){
       setTimeout(resolve, turn);
     }
     else{
