@@ -12,6 +12,7 @@ interface Repository {
     created_at: string;
     updated_at: string;
     language?: string;
+    followers?: number
 };
 
 let allReps:Array<Repository> = repsJson;
@@ -49,37 +50,39 @@ let favoriteLanguagesRep = [...jsArray, ...tsArray, ...pythonArray];
 
 //*4. Buscar por ID
 
-let criteria:number = 91497948;
+let searchId:number = 91497948;
 
-let search = allReps.find(o => o.id === criteria);
+const search = (criteria:number) => {
+    let found = allReps.find(o => o.id === criteria);
+    if (found?.id != null){
+        return found;
+    }
+    else{
+        console.log("Not found");
+    }
+}
 
-//console.log(search);
+let thisRep = search(searchId);
+
+//console.log(thisRep);
 
 //*5. Adicionar "Followers"
 
-interface Display extends Repository{
-    followers: number
+const addFollowers = (repositorio: Repository) => {
+    repositorio.followers != null? repositorio.followers++: repositorio.followers = 1;
 }
 
-let allDisplay:Array<Display> = [];
+allReps.forEach((repositorio) => addFollowers(repositorio));
 
-const updateRep = (repositorio:Repository) => {
-    const updatedRep: Repository & Display = Object.assign({},repositorio,{
-        followers: 1
-    })
-    allDisplay.push(updatedRep);
-    return updatedRep;
+if (thisRep != undefined){
+    addFollowers(thisRep);
 }
-
-allReps.forEach((repositorio) => updateRep(repositorio));
-
-let find = allDisplay.find(o => o.id === criteria);
 
 //console.log(allDisplay);
 
 //*6. console.log dos que utilizam javascript
 
-const exampleFilter = allDisplay.filter((repsJson: Display) => {
+const exampleFilter = allReps.filter((repsJson: Repository) => {
     return repsJson.language === "JavaScript";
 });
 
